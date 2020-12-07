@@ -1,0 +1,12 @@
+syntax = "proto2";
+
+package object_detection.protos;
+
+import "object_detection/protos/rcnn_attention.proto";
+import "object_detection/protos/wrn_attention.proto";
+message AttentionModel {
+  oneof model {
+    RCNNAttention rcnn_attention = 1;
+    WRNAttention wrn_attention = 2;
+  }
+}

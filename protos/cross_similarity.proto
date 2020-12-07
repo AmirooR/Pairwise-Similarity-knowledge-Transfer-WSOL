@@ -1,0 +1,88 @@
+syntax = "proto2";
+
+package object_detection.protos;
+
+import "object_detection/protos/hyperparams.proto";
+import "object_detection/protos/convline.proto";
+import "object_detection/protos/negative_attention.proto";
+
+// Configuration proto for cross similarity.
+message CrossSimilarity {
+  oneof cross_similarity_oneof {
+    CosineCrossSimilarity cosine_cross_similarity = 1;
+    LinearCrossSimilarity linear_cross_similarity = 2;
+    DeepCrossSimilarity deep_cross_similarity = 3;
+    AverageCrossSimilarity average_cross_similarity = 4;
+    PairwiseCrossSimilarity pairwise_cross_similarity = 5;
+    K1CrossSimilarity k1_cross_similarity = 6;
+    EuclideanCrossSimilarity euclidean_cross_similarity = 7;
+    DoubleCrossSimilarity double_cross_similarity = 8;
+  }
+}
+
+message DoubleCrossSimilarity {
+  optional CrossSimilarityForDouble main = 1;
+  optional CrossSimilarityForDouble transfered = 2;
+  optional float main_weight = 3 [default=1.0];
+  optional int32 fea_split_ind = 4;
+}
+
+
+message CrossSimilarityForDouble {
+  oneof cross_similarity_oneof {
+    CosineCrossSimilarity cosine_cross_similarity = 1;
+    LinearCrossSimilarity linear_cross_similarity = 2;
+    DeepCrossSimilarity deep_cross_similarity = 3;
+    AverageCrossSimilarity average_cross_similarity = 4;
+    EuclideanCrossSimilarity euclidean_cross_similarity = 5;
+    PairwiseCrossSimilarity pairwise_cross_similarity = 6;
+  }
+}
+
+message PairwiseCrossSimilarity {
+  optional CrossSimilarityForPairwise cross_similarity = 1;
+  optional bool stop_gradient = 2 [default=false];
+}
+
+message CrossSimilarityForPairwise {
+  oneof cross_similarity_oneof {
+    CosineCrossSimilarity cosine_cross_similarity = 1;
+    LinearCrossSimilarity linear_cross_similarity = 2;
+    DeepCrossSimilarity deep_cross_similarity = 3;
+    AverageCrossSimilarity average_cross_similarity = 4;
+    EuclideanCrossSimilarity euclidean_cross_similarity = 5;
+  }
+}
+
+message AverageCrossSimilarity {
+}
+
+// Configuration proto for CosineCrossSimilarity.
+message CosineCrossSimilarity {
+}
+
+// Configuration proto for LinearCrossSimilarity.
+message LinearCrossSimilarity {
+  // Hyperparameters for fully connected ops used in linear cross similarity.
+  optional Hyperparams fc_hyperparameters = 1;
+}
+
+message DeepCrossSimilarity {
+  // Hyperparams for the last fully connected cross similarity
+  optional Hyperparams fc_hyperparameters = 1;
+  // Convline that would be applied to the concateneted features
+  optional ConvLine convline = 2;
+  optional bool stop_gradient = 3 [default=false];
+  optional NegativeAttention negative_attention = 4;
+  optional bool sum_output = 5 [default=false];
+}
+
+message K1CrossSimilarity {
+  optional string mode = 1 [default="MAX"];
+  optional bool share_weights_with_pairwise_cs = 2 [default=false];
+  optional CrossSimilarityForPairwise cross_similarity = 3;
+  optional int32 topk = 4;
+}
+
+message EuclideanCrossSimilarity {
+}

@@ -1,0 +1,72 @@
+syntax = "proto2";
+package object_detection.protos;
+
+import "object_detection/protos/cross_similarity.proto";
+import "object_detection/protos/convline.proto";
+import "object_detection/protos/hyperparams.proto";
+import "object_detection/protos/attention_losses.proto";
+
+// Configuration for attention tree models.
+message AttentionTree {
+  enum CalibrationType {
+    TWO_SCALES = 1;
+    MULTI_SCALES = 2;
+  }
+  optional SubSampler training_subsampler = 1;
+  optional bool stop_features_gradient = 2 [default=false];
+  optional ConvLine preprocess_convline = 3;
+  repeated AttentionUnit unit = 4;
+  optional bool rescore_instances = 5 [default=false];
+  optional ConvLine rescore_convline = 6;
+  optional float rescore_min_match_frac = 7 [default=0.0];
+  optional Hyperparams rescore_fc_hyperparams = 8;
+  optional ConvLine negative_preprocess_convline = 9;
+  optional ConvLine negative_postprocess_convline = 10;
+  optional CalibrationType calibration_type = 11 [default=MULTI_SCALES];
+  optional int32 fea_split_ind = 12;
+}
+
+message AttentionUnit {
+  optional ConvLine pre_convline = 1;
+  optional ConvLine post_convline = 2;
+  optional int32 ncobj_proposals = 5;
+  optional bool orig_fea_in_post_convline = 6 [default=true];
+  optional bool use_tanh_sigmoid_in_post_convline = 12 [default=false];
+  optional float negative_example_weight = 13 [default=1.0];
+  // options are none, sum, concat
+  optional string post_convline_res = 14 [default="none"];
+  // if it is provided then passes each feature in the res branch
+  // throught an fc first
+  optional Hyperparams res_fc_hyperparams = 15;
+  optional bool compute_scores_after_matching = 16 [default=false];
+  optional CrossSimilarity cross_similarity = 18;
+  optional bool split_fea_in_res = 19 [default=true];
+  optional bool overwrite_fea_by_scores = 20 [default=false];
+
+  optional AttentionLoss loss = 21;
+  optional ConvLine negative_convline = 22;
+  optional bool use_subproblem_logits = 23 [default=false];
+  optional SubSampler training_subsampler = 24;
+  optional float unary_energy_scale = 25 [default=0.0];
+  optional float transfered_objectness_weight = 26 [default=0.0];
+}
+
+message SubSampler {
+  optional bool stratified = 1 [default=false];
+  optional int32 ncobj_proposals = 2;
+
+  // use only if stratified = false
+  optional float positive_balance_fraction = 3;
+
+  // use only if stratified = false
+  optional int32 topk = 4;
+
+  optional bool sample_hard_examples = 5 [default=false];
+
+  // if true every foreground sample is considered as positive
+  // otherwise only target samples are considered as positive
+  // inside the sampler.
+  optional bool agnostic = 6 [default=false];
+}
+
+

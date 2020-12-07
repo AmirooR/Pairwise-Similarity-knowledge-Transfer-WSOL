@@ -1,0 +1,20 @@
+syntax = "proto2";
+
+package object_detection.protos;
+
+import "object_detection/protos/coloc_eval.proto";
+import "object_detection/protos/coloc_input_reader.proto";
+import "object_detection/protos/attention_model.proto";
+import "object_detection/protos/train.proto";
+
+// Convenience message for configuring a training and eval pipeline. Allows all
+// of the pipeline parameters to be configured from one file.
+message AttentionTrainEvalPipelineConfig {
+  optional AttentionModel model = 1;
+  optional TrainConfig train_config = 2;
+  optional CoLocInputReader train_input_reader = 3;
+  optional CoLocEvalConfig eval_config = 4;
+  repeated CoLocInputReader eval_input_reader = 5;
+  optional TrainConfig calib_config = 6;
+  optional CoLocInputReader calib_input_reader = 7;
+}

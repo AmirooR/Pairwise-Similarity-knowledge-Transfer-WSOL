@@ -1,0 +1,24 @@
+syntax = "proto2";
+package object_detection.protos;
+
+import "object_detection/protos/convline.proto";
+
+// Configuration for negative attention.
+message NegativeAttention {
+  enum ConcatType {
+    CONCAT_IN_FEA=1;
+    NEGATIVE_IN_FEA=2;
+    NEGATIVE_IN_ORIG=3;
+  }
+
+  enum SimilarityType {
+    COSINE=1;
+    EUCLIDEAN=2;
+  }
+  optional ConvLine convline = 1;
+  optional ConcatType concat_type = 2 [default=NEGATIVE_IN_FEA];
+  optional SimilarityType similarity_type = 3 [default=COSINE];
+  optional bool use_gt_labels = 4 [default=false];
+  optional bool add_loss = 5 [default=false];
+}
+

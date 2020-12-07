@@ -1,0 +1,12 @@
+syntax = "proto2";
+
+package object_detection.protos;
+
+import "object_detection/protos/coloc_ssd.proto";
+
+// Top level configuration for CoLocDetectionModels.
+message CoLocDetectionModel {
+  oneof model {
+    CoLocSsd coloc_ssd = 1;
+  }
+}

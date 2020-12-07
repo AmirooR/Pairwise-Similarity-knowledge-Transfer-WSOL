@@ -1,0 +1,74 @@
+syntax = "proto2";
+
+package object_detection.protos;
+
+message CoLocInputReader{
+  oneof coloc_input_reader_oneof {
+    DetectionInputReader detection_input_reader = 1;
+    MILInputReader  mil_input_reader = 2;
+    MILDetFeaInputReader mil_det_fea_input_reader = 3;
+  }
+}
+message DetectionInputReader {
+  // Whether data should be processed in the order they are read in, or
+  // shuffled randomly.
+  optional bool shuffle = 1 [default=true];
+
+  // Number of reader instances to create.
+  optional uint32 num_readers = 2 [default=8];
+  
+  optional string split = 3 [default=""];
+  optional string support_db = 4 [default=""];
+  optional string support_db_name = 5 [default=""]; 
+  optional string label_map_path = 6 [default=""];
+  optional float noise_rate = 7 [default=0.0];
+  optional string mask_dir = 8 [default=""];
+  repeated uint32 image_size = 9;
+}
+
+message MILInputReader {
+  // Whether data should be processed in the order they are read in, or
+  // shuffled randomly.
+  optional bool shuffle = 1 [default=true];
+  // Number of reader instances to create.
+  optional uint32 num_readers = 2 [default=8];
+  optional bool is_training = 3 [default=true];
+  optional string label_map_path = 4 [default=""];
+  optional string data_format = 5 [default="channels_last"];
+  optional bool has_bag_iterator = 6 [default=true];
+  optional bool do_pp_mean = 8 [default=false];
+  optional string dataset_name = 9 [default="miniimagenet"];
+  optional string split = 10 [default="train"];
+  optional uint32 train_num = 11 [default=500];
+  optional bool has_single_target = 12 [default=false];
+  //optional int32 num_negative_bags = 13 [default=0];
+  optional int32 num_sample_classes = 14 [default=0];
+  optional string omniglot_prefix = 15 [default=""];
+  optional int32 num_sample_classes_min = 16 [default=5];
+  optional bool one_example_per_class = 17 [default=false];
+}
+
+message MILDetFeaInputReader {
+  // Whether data should be processed in the order they are read in, or
+  // shuffled randomly.
+  optional bool shuffle = 1 [default=true];
+
+  // Number of reader instances to create.
+  optional uint32 num_readers = 2 [default=8];
+  
+  optional string split = 3 [default=""];
+  optional string support_db = 4 [default=""];
+  optional string support_db_name = 5 [default=""]; 
+  optional string label_map_path = 6 [default=""];
+  optional float noise_rate = 7 [default=0.0];
+  optional string mask_dir = 8 [default=""];
+  optional uint32 min_nclasses_in_positive_images = 9 [default=0];
+  repeated uint32 image_size = 10;
+  optional uint32 fea_dim = 11 [default=640];
+  optional bool smart_neg_bag_sampler = 12 [default=false];
+  optional float pos_threshold = 13 [default=0.5];
+  optional string objectness_key = 14 [default="objectness"];
+  repeated uint32 folds = 15;
+  optional string feature_normalization = 16 [default=""];
+  repeated string feas_key = 17;
+}

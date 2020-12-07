@@ -1,0 +1,59 @@
+syntax = "proto2";
+
+package object_detection.protos;
+
+// Configuration proto for attention losses.
+message AttentionLoss {
+  oneof attention_loss_oneof {
+    SoftmaxCrossEntropyLoss softmax_cross_entropy_loss = 1;
+    KLDivergenceLoss kl_divergence_loss = 2;
+    L2Loss l2_loss = 3;
+    PairwiseEstimateLoss pairwise_estimate_loss = 4;
+    PairwiseEstimateLossV2 pairwise_estimate_v2_loss = 5;
+    SoftSigmoidCrossEntropyLoss soft_sigmoid_cross_entropy_loss = 6;
+    RankLoss rank_loss = 7;
+    OnlyForTestingAverageLoss only_for_testing_average_loss = 8;
+    SigmoidCrossEntropyLoss sigmoid_cross_entropy_loss = 9;
+  }
+  optional bool class_agnostic = 10 [default=true];
+  optional float weight = 11 [default=1.0];
+  // If it is 0.0 it does not enforce balance sampling
+  optional float positive_balance_fraction = 12 [default=0.0];
+
+  // If it is 0 uses all the the scores to compute the loss
+  optional int32 minibatch_size = 13 [default=0];
+}
+
+message SoftmaxCrossEntropyLoss {
+  optional float min_match_frac = 1 [default=1.0];
+}
+
+message OnlyForTestingAverageLoss {
+  optional float min_match_frac = 1 [default=1.0];
+}
+message KLDivergenceLoss {
+  optional float witness_rate = 1;
+  optional float min_match_frac = 2 [default=1.0];
+  optional bool partial = 3 [default=true];
+}
+
+message L2Loss {
+  optional float min_match_frac = 1 [default=1.0];
+}
+
+message PairwiseEstimateLoss {
+}
+
+message PairwiseEstimateLossV2 {
+}
+
+message SoftSigmoidCrossEntropyLoss {
+  optional string type = 1 [default="entropy"];
+}
+
+message SigmoidCrossEntropyLoss {
+  optional bool focal_loss = 1 [default=false];
+}
+
+message RankLoss {
+}

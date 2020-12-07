@@ -1,0 +1,30 @@
+syntax = "proto2";
+
+package object_detection.protos;
+
+import "object_detection/protos/attention_tree.proto";
+import "object_detection/protos/post_processing.proto";
+
+message WRNAttention {
+  enum ModelType {
+    WRN = 1;
+    OMNIGLOT = 2;
+  }
+  optional int32 k_shot = 1;
+  optional int32 bag_size = 2;
+  optional int32 num_classes = 3;
+  optional int32 wrn_depth = 4 [default=28];
+  optional int32 wrn_width = 5 [default=10];
+  optional float wrn_dropout_rate = 6 [default=0];
+  optional string wrn_data_format = 7 [default="channels_last"];
+  optional float weight_decay = 8 [default=0.0005];
+
+  //attention tree part
+  optional AttentionTree attention_tree = 9;
+
+  optional bool use_features = 10 [default=false];
+  optional ModelType model_type = 11 [default=WRN];
+  optional int32 num_negative_bags = 12 [default=0];
+
+  optional BatchNonMaxSuppression batch_non_max_suppression = 13;
+}
