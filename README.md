@@ -14,21 +14,28 @@ This project is tested using python2.7 and tensorflow-1.4. Other dependencies ar
 ```bash
 git clone git@github.com:AmirooR/Pairwise-Similarity-knowledge-Transfer-WSOL.git
 ```
+
 2. Add current folder(`Pairwise-Similarity-knowledge-Transfer-WSOL`), tensorflow_model's `research` `research/slim`, and `tensorpack` directories to your python path.
+
 3. Copy the proto files in `rcnn_attention/protos/` directory in tensorflow model's `research/object_detection/protos` and follow their instructions to setup object detection api and compile the proto files with protobuf compiler.
+
 4. You should have extracted inception resnet features and dataset split `.pkl` files in correct paths to run imagenet experiments. As an example look at [this line in this config file](https://github.com/AmirooR/Pairwise-Similarity-knowledge-Transfer-WSOL/blob/master/rcnn_attention/wrn/configs/mil/imagenet/inception_resnet/agnostic_model/agnostic_box_multi_fea/pairwise_loop/templates/k2_icm_301.config#L223). Contact us if you want the features and the dataset split files or need instructions on that.
 
 ## Training and evaluation
+
 1. Train agnostic pairwise model on source split using [this config](https://github.com/AmirooR/Pairwise-Similarity-knowledge-Transfer-WSOL/blob/master/rcnn_attention/wrn/configs/mil/imagenet/inception_resnet/agnostic_model/agnostic_box_multi_fea/k2n0.config).
 ```bash
 cd rcnn_attention/wrn
 bash train.sh mil/imagenet/inception_resnet/agnostic_model/agnostic_box_multi_fea/k2n0
 ```
+This will create the agnostic pairwise model. Next step will use this model for warmup initialization (look at the `train_dir` in the script).
+
 2. Warmup initialization: change directory to `rcnn_attention/wrn` folder and run the [`aggregate.sh`](https://github.com/AmirooR/Pairwise-Similarity-knowledge-Transfer-WSOL/blob/master/rcnn_attention/wrn/aggregate.sh) script. This will save `multifea_K8_init.pkl` dataset using Greedy Tree method by finding common object across groups of 8 images. Check the config files pointed in the script and set the correct paths in them.
 ```bash
 cd rcnn_attention/wrn
 bash aggregate.sh
 ```
+
 3. Run multifold training, warmup with Greedy Inference, and ICM inference loop using [imagenet_multifold_train_and_evaluate_loop_icm.sh](https://github.com/AmirooR/Pairwise-Similarity-knowledge-Transfer-WSOL/blob/master/rcnn_attention/wrn/imagenet_multifold_train_and_evaluate_loop_icm.sh) script in `wrn` folder.
 ```bash
 bash imagenet_multifold_train_and_evaluate_loop_icm.sh
@@ -36,6 +43,7 @@ bash imagenet_multifold_train_and_evaluate_loop_icm.sh
 This will save the resulting datasets and write the infos/evaluation in the respective log folder for each fold and iterations. 
 
 ## Cite
+
 If you use this code, please cite our papers:
 
 ```
