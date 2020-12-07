@@ -25,11 +25,12 @@ git clone git@github.com:AmirooR/Pairwise-Similarity-knowledge-Transfer-WSOL.git
 cd rcnn_attention/wrn
 bash aggregate.sh
 ```
-3. Run multifold training, warmup, and ICM inference loop using [imagenet_multifold_train_and_evaluate_loop_icm.sh](https://github.com/AmirooR/Pairwise-Similarity-knowledge-Transfer-WSOL/blob/master/wrn/imagenet_multifold_train_and_evaluate_loop_icm.sh) script in `wrn` folder.
+3. Run multifold training, warmup with TRWS, and ICM inference loop using [imagenet_multifold_train_and_evaluate_loop_icm.sh](https://github.com/AmirooR/Pairwise-Similarity-knowledge-Transfer-WSOL/blob/master/wrn/imagenet_multifold_train_and_evaluate_loop_icm.sh) script in `wrn` folder.
 ```bash
 bash imagenet_multifold_train_and_evaluate_loop_icm.sh
 ```
 This will save the resulting datasets and write the infos/evaluation in the respective log folder for each fold and iterations. 
+Note that this script uses TRWS inference for warmup. You can change it to use the greedy inference method for faster inference and getting rid of OpenGM by changing the evaluate method in the script and the config files(TODO).
 
 ## Cite
 If you use this code, please cite our papers:
