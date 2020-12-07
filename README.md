@@ -5,7 +5,7 @@ This repository is the official implementation of ECCV 2020 paper: [Pairwise Sim
 
 This project is tested using python2.7 and tensorflow-1.4. Other dependencies are:
 1. [tensorflow models](https://github.com/tensorflow/models/commit/3bf85a4eddb9c56a28cc266ee4aa5604fb4d8334). Note that this is the exact commit we used. However, newer commits may also work as well.
-2. [tensorpack](https://github.com/tensorpack/tensorpack). TODO(add exact commit)
+2. [tensorpack](https://github.com/amiroor/tensorpack). Note that this is a clone of a specific commit of the original tensorpack. Our code only works with this commit.
 3. [OpenGM](https://github.com/opengm/opengm.git)  You need to compile the python extension along with external TRWS and add the compiled shared library to your python environment.
 
 ## Setup
@@ -19,7 +19,11 @@ git clone git@github.com:AmirooR/Pairwise-Similarity-knowledge-Transfer-WSOL.git
 4. You should have extracted inception resnet features and dataset split `.pkl` files in correct paths to run imagenet experiments. As an example look at [this line in this config file](https://github.com/AmirooR/Pairwise-Similarity-knowledge-Transfer-WSOL/blob/master/rcnn_attention/wrn/configs/mil/imagenet/inception_resnet/agnostic_model/agnostic_box_multi_fea/pairwise_loop/templates/k2_icm_301.config#L223). Contact us if you want the features and the dataset split files or need instructions on that.
 
 ## Training and evaluation
-1. Train agnostic pairwise model on source split. (TODO add config and train instruction)
+1. Train agnostic pairwise model on source split using [this config](https://github.com/AmirooR/Pairwise-Similarity-knowledge-Transfer-WSOL/blob/master/rcnn_attention/wrn/configs/mil/imagenet/inception_resnet/agnostic_model/agnostic_box_multi_fea/k2n0.config).
+```bash
+cd rcnn_attention/wrn
+bash train.sh mil/imagenet/inception_resnet/agnostic_model/agnostic_box_multi_fea/k2n0
+```
 2. Warmup initialization: change directory to `rcnn_attention/wrn` folder and run the [`aggregate.sh`](https://github.com/AmirooR/Pairwise-Similarity-knowledge-Transfer-WSOL/blob/master/rcnn_attention/wrn/aggregate.sh) script. This will save `multifea_K8_init.pkl` dataset using Greedy Tree method by finding common object across groups of 8 images. Check the config files pointed in the script and set the correct paths in them.
 ```bash
 cd rcnn_attention/wrn
