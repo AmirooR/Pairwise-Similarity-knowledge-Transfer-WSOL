@@ -6,7 +6,7 @@ This repository is the official implementation of ECCV 2020 paper: [Pairwise Sim
 This project is tested using python2.7 and tensorflow-1.4. Other dependencies are:
 1. [tensorflow models](https://github.com/tensorflow/models/commit/3bf85a4eddb9c56a28cc266ee4aa5604fb4d8334). Note that this is the exact commit we used. However, newer commits may also work as well.
 2. [tensorpack](https://github.com/tensorpack/tensorpack). TODO(add exact commit)
-3. (Optional) [OpenGM](https://github.com/opengm/opengm.git) if you want to use other MRF inference methods than our ICCV19 Greedy Tree method. You need to compile the python extension along with external TRWS and add the compiled shared library to your python environment.
+3. [OpenGM](https://github.com/opengm/opengm.git) if you want to use other MRF inference methods than our ICCV19 Greedy Tree method. You need to compile the python extension along with external TRWS and add the compiled shared library to your python environment.
 
 ## Setup
 
@@ -25,12 +25,11 @@ git clone git@github.com:AmirooR/Pairwise-Similarity-knowledge-Transfer-WSOL.git
 cd rcnn_attention/wrn
 bash aggregate.sh
 ```
-3. Run multifold training, warmup with TRWS, and ICM inference loop using [imagenet_multifold_train_and_evaluate_loop_icm.sh](https://github.com/AmirooR/Pairwise-Similarity-knowledge-Transfer-WSOL/blob/master/wrn/imagenet_multifold_train_and_evaluate_loop_icm.sh) script in `wrn` folder.
+3. Run multifold training, warmup with Greedy Inference, and ICM inference loop using [imagenet_multifold_train_and_evaluate_loop_icm.sh](https://github.com/AmirooR/Pairwise-Similarity-knowledge-Transfer-WSOL/blob/master/wrn/imagenet_multifold_train_and_evaluate_loop_icm.sh) script in `wrn` folder.
 ```bash
 bash imagenet_multifold_train_and_evaluate_loop_icm.sh
 ```
 This will save the resulting datasets and write the infos/evaluation in the respective log folder for each fold and iterations. 
-Note that this script uses TRWS inference for warmup. You can change it to use the greedy inference method for faster inference and getting rid of OpenGM by changing the evaluate method in the script and the config files(TODO).
 
 ## Cite
 If you use this code, please cite our papers:
