@@ -40,7 +40,7 @@ bash aggregate.sh
 ```bash
 bash imagenet_multifold_train_and_evaluate_loop_icm.sh
 ```
-This will save the resulting datasets and write the infos/evaluation in the respective log folder for each fold and iterations. 
+This will save the resulting datasets and write the infos/evaluation in the respective log folders for each fold and iteration.
 
 ## Cite
 
